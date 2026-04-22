@@ -1,6 +1,6 @@
 {
   "name": "medhira-react-native-responsive-screen",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Responsive screen utilities for React Native - Powered by MEDHIRA",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
