@@ -1,6 +1,6 @@
 {
   "name": "medhira-react-native-responsive-screen",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Responsive screen utilities for React Native - Powered by MEDHIRA",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -93,9 +93,24 @@
     "output": "lib",
     "targets": [
       "codegen",
-      ["commonjs", { "esm": true }],
-      ["module", { "esm": true }],
-      ["typescript", { "project": "tsconfig.build.json" }]
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
     ]
   },
   "codegenConfig": {
