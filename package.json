@@ -1,6 +1,6 @@
 {
   "name": "medhira-react-native-responsive-screen",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Responsive screen utilities for React Native - Powered by MEDHIRA",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -124,5 +124,10 @@
     "android": {
       "javaPackageName": "com.medhiranativeresponsivescreen"
     }
+  },
+  "create-react-native-library": {
+    "languages": "js",
+    "type": "library",
+    "version": "0.51.1"
   }
 }
