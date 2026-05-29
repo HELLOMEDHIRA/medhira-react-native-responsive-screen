@@ -1,20 +1,24 @@
 {
   "name": "medhira-react-native-responsive-screen",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Responsive screen utilities for React Native - Powered by MEDHIRA",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "types": "./lib/typescript/commonjs/index.d.ts",
+  "files": [
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
   "logo": "https://raw.githubusercontent.com/HELLOMEDHIRA/medhira/main/assets/medhira-logo.png",
   "scripts": {
-    "example": "yarn workspace medhira-react-native-responsive-screen-example",
     "test": "jest",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
     "prepare": "bob build && npm run postbuild",
-    "postbuild": "node minify.js",
+    "postbuild": "node minify.mjs",
     "release": "release-it"
   },
   "keywords": [
@@ -22,7 +26,10 @@
     "react-native",
     "responsive",
     "screen",
-    "dimensions"
+    "dimensions",
+    "wp",
+    "hp",
+    "orientation"
   ],
   "repository": {
     "type": "git",
@@ -32,77 +39,72 @@
     "MEDHIRA Team"
   ],
   "author": "MEDHIRA <hello.medhira@gmail.com> (https://medhira.readthedocs.io/en/latest/)",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/HELLOMEDHIRA/medhira-react-native-responsive-screen/issues"
   },
-  "homepage": "https://github.com/HELLOMEDHIRA/medhira-react-native-responsive-screen#readme",
+  "homepage": "https://medhira-react-native-responsive-screen.readthedocs.io",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^20.5.0",
-    "@evilmartians/lefthook": "^2.1.6",
-    "@react-native/eslint-config": "^0.85.2",
-    "@release-it/conventional-changelog": "^10.0.6",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@eslint/js": "^10.0.1",
+    "@evilmartians/lefthook": "^2.1.9",
+    "@react-native/babel-preset": "^0.85.3",
+    "@testing-library/react-native": "^13.3.3",
     "@types/jest": "^30.0.0",
-    "@types/react": "^19.2.14",
-    "commitlint": "^20.5.0",
+    "@types/react": "^19.2.15",
+    "babel-jest": "^30.4.1",
+    "commitlint": "^21.0.2",
     "del-cli": "^7.0.0",
-    "eslint": "^10.2.1",
+    "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
-    "jest": "^30.3.0",
+    "eslint-plugin-prettier": "^5.5.6",
+    "fast-glob": "^3.3.3",
+    "jest": "^30.4.2",
     "prettier": "^3.8.3",
-    "react": "19.2.5",
-    "react-native": "0.85.2",
+    "react": "19.2.6",
+    "react-native": "0.85.3",
     "react-native-builder-bob": "^0.41.0",
-    "release-it": "^20.0.0",
-    "shx": "^0.4.0",
-    "terser": "^5.46.1",
-    "typescript": "^6.0.3"
+    "react-test-renderer": "19.2.6",
+    "release-it": "^20.0.1",
+    "terser": "^5.48.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
-  "overrides": {
-    "@react-native/eslint-config": {
-      "eslint": "^10.2.1"
-    },
-    "@release-it/conventional-changelog": {
-      "release-it": "^20.0.0"
-    },
-    "lottie-react-native": {
-      "@lottiefiles/dotlottie-react": "^0.19.0"
-    }
-  },
-  "workspaces": [
-    "example"
-  ],
   "packageManager": "yarn@3.6.1",
   "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
+    "testEnvironment": "node",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native|@react-native|@testing-library/react-native)/)"
+    ],
+    "modulePathIgnorePatterns": ["<rootDir>/lib/"]
   },
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
     "targets": [
-      "codegen",
       [
         "commonjs",
         {
-          "esm": true
+          "esm": true,
+          "sourceMaps": false
         }
       ],
       [
         "module",
         {
-          "esm": true
+          "esm": true,
+          "sourceMaps": false
         }
       ],
       [
@@ -112,22 +114,5 @@
         }
       ]
     ]
-  },
-  "codegenConfig": {
-    "name": "RNMedhiraReactNativeResponsiveScreenSpec",
-    "type": "modules",
-    "jsSrcsDir": "lib",
-    "outputDir": {
-      "ios": "ios/generated",
-      "android": "android/generated"
-    },
-    "android": {
-      "javaPackageName": "com.medhiranativeresponsivescreen"
-    }
-  },
-  "create-react-native-library": {
-    "languages": "js",
-    "type": "library",
-    "version": "0.51.1"
   }
 }

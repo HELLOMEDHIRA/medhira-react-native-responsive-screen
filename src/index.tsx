@@ -1,44 +1,151 @@
-import { PixelRatio, Dimensions } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { Dimensions, PixelRatio, type ScaledSize } from 'react-native';
 
-// Retrieve initial screen's width
-let screenWidth = Dimensions.get('window').width;
+export type Orientation = 'portrait' | 'landscape';
 
-// Retrieve initial screen's height
-let screenHeight = Dimensions.get('window').height;
+export type OrientationListener =
+  | ((orientation: Orientation) => void)
+  | {
+      setState: (state: { orientation: Orientation }) => void;
+    };
 
-const widthPercentageToDP = (widthPercent: string | number) => {
-  // Parse string percentage input and convert it to number.
-  const elemWidth =
-    typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
+let SCREEN_WIDTH = Dimensions.get('window').width;
+let SCREEN_HEIGHT = Dimensions.get('window').height;
 
-  // Use PixelRatio.roundToNearestPixel method in order to round the layout
-  // size (dp) to the nearest one that correspons to an integer number of pixels.
-  return PixelRatio.roundToNearestPixel((screenWidth * elemWidth) / 100);
+let dimensionSubscription: { remove: () => void } | null = null;
+let orientationHandler: ((dimensions: { window: ScaledSize }) => void) | null =
+  null;
+
+const parsePercent = (value: string | number): number => {
+  const parsed = typeof value === 'number' ? value : parseFloat(value);
+
+  if (typeof __DEV__ !== 'undefined' && __DEV__ && Number.isNaN(parsed)) {
+    console.warn(
+      '[medhira-react-native-responsive-screen] Invalid percentage value:',
+      value,
+    );
+  }
+
+  return parsed;
 };
 
-const heightPercentageToDP = (heightPercent: string | number) => {
-  // Parse string percentage input and convert it to number.
-  const elemHeight =
-    typeof heightPercent === 'number'
-      ? heightPercent
-      : parseFloat(heightPercent);
+const getOrientation = (): Orientation =>
+  SCREEN_WIDTH < SCREEN_HEIGHT ? 'portrait' : 'landscape';
 
-  // Use PixelRatio.roundToNearestPixel method in order to round the layout
-  // size (dp) to the nearest one that correspons to an integer number of pixels.
-  return PixelRatio.roundToNearestPixel((screenHeight * elemHeight) / 100);
+const updateScreenDimensions = (window: ScaledSize): void => {
+  SCREEN_WIDTH = window.width;
+  SCREEN_HEIGHT = window.height;
 };
 
-const listenOrientationChange = (that: any) => {
-  Dimensions.addEventListener('change', (newDimensions) => {
-    // Retrieve and save new dimensions
-    screenWidth = newDimensions.window.width;
-    screenHeight = newDimensions.window.height;
+/**
+ * Returns the current screen width in dp.
+ */
+const getScreenWidth = (): number => SCREEN_WIDTH;
 
-    // Trigger screen's rerender with a state update of the orientation variable
-    that.setState({
-      orientation: screenWidth < screenHeight ? 'portrait' : 'landscape',
-    });
-  });
+/**
+ * Returns the current screen height in dp.
+ */
+const getScreenHeight = (): number => SCREEN_HEIGHT;
+
+/**
+ * Converts a width percentage to independent pixels (dp).
+ */
+const widthPercentageToDP = (widthPercent: string | number): number => {
+  const percent = parsePercent(widthPercent);
+
+  return PixelRatio.roundToNearestPixel((SCREEN_WIDTH * percent) / 100);
 };
 
-export {screenWidth as SCREEN_WIDTH,screenHeight as SCREEN_HEIGHT, widthPercentageToDP, heightPercentageToDP, listenOrientationChange };
+/**
+ * Converts a height percentage to independent pixels (dp).
+ */
+const heightPercentageToDP = (heightPercent: string | number): number => {
+  const percent = parsePercent(heightPercent);
+
+  return PixelRatio.roundToNearestPixel((SCREEN_HEIGHT * percent) / 100);
+};
+
+const notifyOrientationListener = (listener: OrientationListener): void => {
+  const orientation = getOrientation();
+
+  if (typeof listener === 'function') {
+    listener(orientation);
+    return;
+  }
+
+  listener.setState({ orientation });
+};
+
+/**
+ * Listens for orientation changes and triggers a re-render.
+ * Pass a class component instance or a state setter callback.
+ */
+const listenOrientationChange = (listener: OrientationListener): void => {
+  removeOrientationListener();
+
+  orientationHandler = ({ window }) => {
+    updateScreenDimensions(window);
+    notifyOrientationListener(listener);
+  };
+
+  dimensionSubscription = Dimensions.addEventListener(
+    'change',
+    orientationHandler,
+  );
+};
+
+/**
+ * Removes the orientation change listener.
+ * Call this in componentWillUnmount or in a useEffect cleanup.
+ */
+const removeOrientationListener = (): void => {
+  dimensionSubscription?.remove();
+  dimensionSubscription = null;
+  orientationHandler = null;
+};
+
+/**
+ * React hook for responsive layouts with live dimension updates.
+ */
+const useResponsiveScreen = () => {
+  const [orientation, setOrientation] = useState<Orientation>(getOrientation);
+  const [width, setWidth] = useState(getScreenWidth);
+  const [height, setHeight] = useState(getScreenHeight);
+
+  useEffect(() => {
+    const listener = (nextOrientation: Orientation) => {
+      setOrientation(nextOrientation);
+      setWidth(getScreenWidth());
+      setHeight(getScreenHeight());
+    };
+
+    listenOrientationChange(listener);
+
+    return () => {
+      removeOrientationListener();
+    };
+  }, []);
+
+  const wp = useCallback(widthPercentageToDP, []);
+  const hp = useCallback(heightPercentageToDP, []);
+
+  return {
+    wp,
+    hp,
+    width,
+    height,
+    orientation,
+  };
+};
+
+export {
+  SCREEN_WIDTH,
+  SCREEN_HEIGHT,
+  getScreenWidth,
+  getScreenHeight,
+  widthPercentageToDP,
+  heightPercentageToDP,
+  listenOrientationChange,
+  removeOrientationListener,
+  useResponsiveScreen,
+};

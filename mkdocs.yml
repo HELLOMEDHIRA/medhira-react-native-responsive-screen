@@ -1,9 +1,10 @@
 site_name: MEDHIRA React Native Responsive Screen
 site_url: https://medhira-react-native-responsive-screen.readthedocs.io
-site_description: Responsive screen utilities - Engineering Intelligence Across Everything
+site_description: Responsive screen utilities for React Native - Powered by MEDHIRA
 site_author: MEDHIRA Team
 
 repo_url: https://github.com/HELLOMEDHIRA/medhira-react-native-responsive-screen
+repo_name: HELLOMEDHIRA/medhira-react-native-responsive-screen
 
 copyright: "Copyright &copy; 2024 MEDHIRA"
 
@@ -25,6 +26,10 @@ theme:
         icon: material/white-balance-sunny
         name: Switch to light mode
   logo: https://raw.githubusercontent.com/HELLOMEDHIRA/medhira/main/assets/medhira-logo.png
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
 
 plugins:
   - search:
@@ -32,6 +37,10 @@ plugins:
 markdown_extensions:
   - admonition
   - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
 
 nav:
   - Home: index.md
@@ -40,8 +49,11 @@ nav:
       - Quick Start: getting-started/quick-start.md
   - API:
       - Functions: api/functions.md
+      - Hooks: api/hooks.md
+  - Guides:
+      - Orientation Changes: guides/orientation.md
   - About:
       - License: about/license.md
 
 extra:
-  version: 0.0.1
+  version: 0.1.0

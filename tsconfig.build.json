@@ -4,11 +4,11 @@
     "noEmit": false,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "rootDir": "./src",
     "outDir": "./lib/typescript",
     "moduleResolution": "bundler"
   },
   "include": ["src"],
-  "exclude": ["**/__tests__/**", "**/*.test.ts", "**/*.test.tsx","example","lib"]
+  "exclude": ["**/__tests__/**", "**/*.test.ts", "**/*.test.tsx", "lib"]
 }

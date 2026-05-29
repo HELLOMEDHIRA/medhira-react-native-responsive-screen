@@ -1,8 +1,27 @@
 # License
 
-MIT - See LICENSE file
+This project is licensed under the **Apache License, Version 2.0**.
+
+See the [LICENSE](https://github.com/HELLOMEDHIRA/medhira-react-native-responsive-screen/blob/main/LICENSE) file for the full license text.
+
+```
+Copyright 2024 MEDHIRA
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
 ## MEDHIRA
 
-- https://medhira.readthedocs.io/en/latest/
-- hello.medhira@gmail.com
+- Website: [medhira.readthedocs.io](https://medhira.readthedocs.io/en/latest/)
+- GitHub: [HELLOMEDHIRA](https://github.com/HELLOMEDHIRA)
+- Email: hello.medhira@gmail.com
